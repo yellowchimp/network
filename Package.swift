@@ -3,8 +3,14 @@
 
 import PackageDescription
 
+let supportedPlatforms: [SupportedPlatform]? = [
+    .macOS(.v12),
+    .iOS(.v15)
+]
+
 let package = Package(
     name: "YCNetwork",
+    platforms: supportedPlatforms,
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
