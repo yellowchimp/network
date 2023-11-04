@@ -13,6 +13,5 @@ public enum FetchNetworkError: Swift.Error {
     case malformedURL
     case noHTTPURLResponse
     case unauthorized
-    case missingAuthorizationToken
     case reason(String)
 }
