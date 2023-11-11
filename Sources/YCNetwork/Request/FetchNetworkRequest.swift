@@ -31,7 +31,7 @@ public struct FetchNetworkRequest {
         
     func urlRequest(baseURL: String,
                     encoder: JSONEncoder? = nil,
-                    defaultRequestInterceptors: [RequestInterceptor]) throws -> URLRequest {
+                    defaultRequestInterceptors: [RequestInterceptor]) async throws -> URLRequest {
         
         guard var url = URL(string: baseURL) else {
             throw FetchNetworkError.malformedURL
@@ -46,14 +46,14 @@ public struct FetchNetworkRequest {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method.rawValue
         
-        try defaultRequestInterceptors.forEach { interceptor in
-            try interceptor.intercept(&urlRequest)
+        for interceptor in defaultRequestInterceptors {
+            try await interceptor.intercept(&urlRequest)
         }
         
-        try interceptors.forEach { interceptor in
-            try interceptor.intercept(&urlRequest)
+        for interceptor in interceptors {
+            try await interceptor.intercept(&urlRequest)
         }
-        
+                
         if method != .get,
            let body = body,
            let encoder = encoder {

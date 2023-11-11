@@ -49,19 +49,19 @@ public final class FetchNetworkService: FetchNetworkServiceProtocol {
     @discardableResult
     private func execute(_ request: FetchNetworkRequest) async throws -> FetchNetworkResponse {
         
-        let urlRequest = try request.urlRequest(baseURL: baseURL,
-                                                encoder: encoder,
-                                                defaultRequestInterceptors: defaultRequestInterceptors)
+        let urlRequest = try await request.urlRequest(baseURL: baseURL,
+                                                      encoder: encoder,
+                                                      defaultRequestInterceptors: defaultRequestInterceptors)
         
         let (data, urlResponse) = try await urlSession.data(for: urlRequest)
         
         let response = try FetchNetworkResponse(data: data,
                                                 urlResponse: urlResponse)
         
-        try defaultResponseInterceptors.forEach { interceptor in
-            try interceptor.intercept(response)
+        for interceptor in defaultResponseInterceptors {
+            try await interceptor.intercept(response)
         }
-        
+                
         if response.isValid {
             return response
         }

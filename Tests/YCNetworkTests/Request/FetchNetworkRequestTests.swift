@@ -17,7 +17,7 @@ final class FetchNetworkRequestTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testDefaultHeaders() throws {
+    func testDefaultHeaders() async throws {
         
         subject = .get(URLPath: "/some-path")
         
@@ -26,8 +26,8 @@ final class FetchNetworkRequestTests: XCTestCase {
             AcceptLanguageInterceptor(value: "en")
         ]
         
-        let request = try subject.urlRequest(baseURL: "http://localhost:8080/api",
-                                             defaultRequestInterceptors: interceptors)
+        let request = try await subject.urlRequest(baseURL: "http://localhost:8080/api",
+                                                   defaultRequestInterceptors: interceptors)
         
         let header = try XCTUnwrap(request.allHTTPHeaderFields)
         XCTAssertEqual(header.count, 2)
@@ -35,7 +35,7 @@ final class FetchNetworkRequestTests: XCTestCase {
         XCTAssertEqual(header["Content-Type"], "application/json; charset=utf-8")
     }
     
-    func testDefaultHeadersWithAuthorization() throws {
+    func testDefaultHeadersWithAuthorization() async throws {
         
         let auth: AuthorizationInterceptor = .basic(value: "username:password")
         
@@ -46,8 +46,8 @@ final class FetchNetworkRequestTests: XCTestCase {
             AcceptLanguageInterceptor(value: "en")
         ]
         
-        let request = try subject.urlRequest(baseURL: "http://localhost:8080/api",
-                                             defaultRequestInterceptors: interceptors)
+        let request = try await subject.urlRequest(baseURL: "http://localhost:8080/api",
+                                                   defaultRequestInterceptors: interceptors)
         
         let header = try XCTUnwrap(request.allHTTPHeaderFields)
         XCTAssertEqual(header.count, 3)

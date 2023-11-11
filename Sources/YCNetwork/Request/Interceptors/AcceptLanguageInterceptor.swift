@@ -15,7 +15,7 @@ public struct AcceptLanguageInterceptor: RequestInterceptor {
         self.value = value
     }
     
-    public func intercept(_ request: inout URLRequest) throws {
+    public func intercept(_ request: inout URLRequest) async throws {
         request.addValue(value, forHTTPHeaderField: "Accept-Language")
     }
     

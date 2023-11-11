@@ -9,6 +9,6 @@ import Foundation
 
 public protocol ResponseInterceptor {
     
-    func intercept(_ response: FetchNetworkResponse) throws
+    func intercept(_ response: FetchNetworkResponse) async throws
     
 }
